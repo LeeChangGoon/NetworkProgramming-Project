@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>상품 정보</title>
+    <style>
+        .product-image {
+            width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>상품 정보</h2>
+    <button onclick="location.href = '/public/lchmain.html'">메인으로</button>
+    <ul>
+        <% for (var i = 0; i < data.length; i++) { %>
+            <img src="<%= data[i].image %>" alt="product image" class="product-image">
+            <li>상품명: <%= data[i].name %><br>브랜드: <%= data[i].brand %><br>가격: <%= data[i].price %>원<br>
+                <button onclick="searchShops('<%= encodeURIComponent(data[i].Address) %>', '<%= encodeURIComponent(data[i].shopname) %>',
+                '<%= encodeURIComponent(data[i].Address2) %>','<%= encodeURIComponent(data[i].shopname2) %>',
+                '<%= encodeURIComponent(data[i].Address3) %>','<%= encodeURIComponent(data[i].shopname3) %>')">쇼핑몰 확인</button>
+            </li>
+        <% } %>
+    </ul>
+    <script>
+        function searchShops(address, shopname, address2, shopname2, address3, shopname3) {
+            // 주소 정보와 상점 이름을 전달하고 페이지 이동
+            if (address) {
+                var url = "/public/shop.html?address=" + address + "&shopname=" + shopname + "&address2=" + address2 + "&shopname2=" + shopname2 + "&address3=" + address3 + "&shopname3=" + shopname3;
+                location.href = url;
+            } else {
+                alert("주소 정보가 없습니다.");
+            }
+        }
+    </script>
+</body>
+</html>

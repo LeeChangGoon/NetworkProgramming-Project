@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>옷쇼핑 도우미</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 250px;
+            background-image: url("/backimage.png"); /* 배경 이미지 경로 */
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .navbar {
+        background-color: #af744c;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        position: fixed; /* 네비게이션 바를 상단에 고정 */
+        top: 0; /* 네비게이션 바를 상단에 고정 */
+        left: 0; /* 네비게이션 바를 상단에 고정 */
+        width: 100%; /* 네비게이션 바의 너비를 100%로 설정 */
+        }
+
+     .navbar h1 {
+         color: #fff;
+         font-size: 24px;
+         text-align: center;
+         margin-left: 20px;
+      }
+
+        .navbar button {
+            padding: 10px 20px;
+            background-color: #af744cd5;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .navbar button.logout-button {
+            margin-left: auto;
+            text-align: right;
+    }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .login-form input[type="submit"],
+        .login-form input[type="button"] {
+            padding: 10px 20px;
+            background-color: #af744cd5;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .select {
+            text-align: center;
+            margin-top: -130px;
+        }
+        .select h2{
+            color: #111d1d;
+        }
+        .product-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .product-image {
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>옷쇼핑 도우미</h1>
+        <form action="/process/logout" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+        <div class="select">
+            <br>
+            <h2>옷 종류를 선택하세요</h2>
+            <form method="get" action="/process/showproduct">
+                <select id="cloth-select" name="tableName" onchange="updateProductImage(this.value)">
+                  <option value="none">=== 선택 ===</option>
+                  <option value="shortsleeve">반팔</option>
+                  <option value="shortpants">반바지</option>
+                  <option value="shoes">여름신발</option>
+                </select>
+                <input type="submit" value="선택완료">
+              </form>
+            </div>
+            <div class="product-container">
+                <img id="product-image" src="/public/choice.png" class="product-image">
+            </div>
+    </div>
+
+    <script>
+        function updateProductImage(selectedValue) {
+            var productImageElement = document.getElementById("product-image");
+
+            if (selectedValue === "none") {
+                productImageElement.src = "/public/choice.png";
+            } else if (selectedValue === "shortsleeve") {
+                productImageElement.src = "/public/polo.png"; // 해당 이미지로 변경
+            } else if (selectedValue === "shortpants") {
+                productImageElement.src = "/public/shorts.png"; 
+            } else if (selectedValue === "shoes") {
+                productImageElement.src = "/public/shoes.png"; 
+            }
+        }
+    </script>
+
+
+</body>
+</html>

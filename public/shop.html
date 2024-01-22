@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>주소로 장소 표시하기</title>
+</head>
+<body>
+    <h2>쇼핑몰 위치 정보</h2>
+    <button onclick="location.href = '/public/lchmain.html'">메인으로</button>
+    <div id="map" style="width:100%;height: 500px;"></div>
+    <div id="addressList"></div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=32a9b86281cefdfd5acead14ed1787e3&libraries=services"></script>
+    <script>
+        var mapContainer = document.getElementById('map'); // 지도를 표시할 div
+        var addressListContainer = document.getElementById('addressList'); // 주소 목록 표시
+
+        //product.ejs에서 URL 통해 전달받은 주소와 상점이름.
+        var urlParams = new URLSearchParams(location.search);
+        var address = urlParams.get('address');
+        var shopname = urlParams.get('shopname');
+        var address2 = urlParams.get('address2');
+        var shopname2 = urlParams.get('shopname2');
+        var address3 = urlParams.get('address3');
+        var shopname3 = urlParams.get('shopname3');
+
+        // 주소와 상점이름 배열
+        var shopList = [
+            { title: 'A. ' + shopname, address: address },
+            { title: 'B. ' + shopname2, address: address2 },
+            { title: 'C. ' + shopname3, address: address3 }
+        ];
+
+        // 주소로 좌표를 검색하여 지도에 표시하는 함수
+        function addressSearch() {
+            var mapOption = {
+                center: new kakao.maps.LatLng(36.350412, 127.384548), // Default 지도의 중심좌표: 대전 시청
+                level: 6 // 지도의 확대 레벨
+            };
+
+            // 지도를 생성합니다    
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+            
+            // 주소 목록을 순회하며 마커와 주소를 표시합니다
+            shopList.forEach(function (shop) {
+                // 주소로 좌표를 검색합니다
+                geocoder.addressSearch(shop.address, function(result, status) {
+                    // 정상적으로 검색이 완료됐으면 
+                    if (status === kakao.maps.services.Status.OK) {
+                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                        // 결과값으로 받은 위치를 마커로 표시합니다
+                        var marker = new kakao.maps.Marker({
+                            map: map,
+                            position: coords
+                        });
+
+                        // 인포윈도우로 장소에 대한 설명을 표시
+                        var infowindow = new kakao.maps.InfoWindow({
+                            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + shop.title + '</div>'
+                        });
+                        infowindow.open(map, marker);
+
+                        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                        map.setCenter(coords);
+
+                        // 주소 목록 추가
+                        var addressElement = document.createElement('p');
+                        addressElement.innerText = shop.title + ': ' + shop.address;
+                        addressListContainer.appendChild(addressElement);
+                    }
+                });
+            });
+        }
+
+        // 주소로 좌표를 검색하여 지도에 표시합니다
+        addressSearch();
+    </script>
+</body>
+</html>
